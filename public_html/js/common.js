@@ -69,16 +69,19 @@ drawPginate = function (currentValue, buttonCount) {
 
     // if (currentValue > buttonCount - marginValue) {
     $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
-    while ((currentValue + 2) <= buttonArray.length) {
-        for (var i = currentValue - 2; i <= currentValue + 2; i++) {
+
+        for (var i = currentValue - 2; i <= parseInt(currentValue)+2; i++) {
             buttonArrayDisplay.push(i);
             if (i < 1) {
                 i = 1;
             }
+            if((parseInt(currentValue)+2)>=buttonArray.length){
+                continue;
+            }
 
             $('#paginate').append("<input type='button' class='page-button' value='" + i + "'>  ");
         }
-    }
+    
     displayArray(buttonArrayDisplay);
     $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
 
