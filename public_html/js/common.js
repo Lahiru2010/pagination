@@ -3,39 +3,35 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 dataCount = 300; /* Number of data rows */
 pageSize = 10; /* rows per page */
-marginValue = 4; /* how many numbers should show in pagination */
+marginRange = 3; /* number of buttons per side */
 firstPageText = "First"; /* First or >> */
 lastPageText = "Last"; /* Last or << */
 
-marginRange = 3;
-
-
-$(function () {
+$(function() {
     currentValue = 1; /* current page number */
     buttonCount = parseInt(dataCount / pageSize);
     drawPginate(currentValue, buttonCount);
 
-    $('#paginate').on('click', '.page-button', function () {
+    $('#paginate').on('click', '.page-button', function() {
         currentValue = parseInt($(this).val());
         setCurrent(currentValue);
 
         drawPginate(currentValue, buttonCount);
     });
-    $('#paginate').on('click', '.page-button-first', function () {
+    $('#paginate').on('click', '.page-button-first', function() {
         currentValue = 1;
         setCurrent(currentValue);
         drawPginate(currentValue, buttonCount);
     });
-    $('#paginate').on('click', '.page-button-last', function () {
+    $('#paginate').on('click', '.page-button-last', function() {
         currentValue = parseInt(buttonCount);
         setCurrent(currentValue);
         drawPginate(currentValue, buttonCount);
     });
 
-    $('#paginate').on('click', '.page-button-pre', function () {
+    $('#paginate').on('click', '.page-button-pre', function() {
         currentValue = parseInt(currentValue) - 1;
         if (currentValue < 1)
             currentValue = 1
@@ -44,7 +40,7 @@ $(function () {
         drawPginate(currentValue, buttonCount);
     });
 
-    $('#paginate').on('click', '.page-button-next', function () {
+    $('#paginate').on('click', '.page-button-next', function() {
         currentValue = parseInt(currentValue) + 1;
         if (currentValue >= buttonCount)
             currentValue = buttonCount;
@@ -54,36 +50,25 @@ $(function () {
     });
 });
 
-drawPginate = function (currentValue, buttonCount) {
+drawPginate = function(currentValue, buttonCount) {
 
-    var buttonArray = [];
-    for (i = 0; i < buttonCount; i++) {
-        buttonArray.push(i);
-    }
-
-    var buttonArrayDisplay = [];
-    // var allCount = currentValue + (marginValue - 1);
     clearPaginate();
     $('#paginate').append("<input type='button' class='page-button-first' value='" + firstPageText + "'>  ");
     $('#paginate').append("<input type='button' class='page-button-pre' value='Prev'>  ");
 
 
     if ((currentValue - marginRange) <= 0) {
-        console.log(parseInt(currentValue) - marginRange + "----\n");
         drawButtons(1, parseInt((2 * marginRange) + 2));
-        //console.log("parseInt((2*marginRange)+2)  : " + parseInt((2 * marginRange) + 2));
         displayDots();
     } else if ((currentValue - marginRange) <= 1) {
 
-        console.log(parseInt(currentValue) - marginRange + "eeee \n");
         drawButtons(1, currentValue + marginRange + 1);
         displayDots();
 
     } else if ((currentValue) >= (buttonCount - marginRange)) {
         displayDots();
-        console.log(parseInt(currentValue) - marginRange + "fffff \n");
         drawButtons(parseInt(buttonCount - 2 * marginRange), parseInt(buttonCount + 1));
-        console.log("parseInt(buttonCount-2*marginRange) : " + parseInt(buttonCount - 2 * marginRange));
+
     } else {
         displayDots();
         drawButtons(currentValue - marginRange, currentValue + marginRange + 1);
@@ -97,22 +82,19 @@ drawPginate = function (currentValue, buttonCount) {
     getInputsByValue(currentValue);
 };
 
-clearPaginate = function () {
+clearPaginate = function() {
     $('#paginate').empty();
 };
 
-setCurrent = function (currentValue) {
+setCurrent = function(currentValue) {
     $('#currentVal').html(currentValue);
 };
 
-getInputsByValue = function (value)
-{
+getInputsByValue = function(value) {
     $("#paginate :input[value='" + value + "']").addClass('current');
 };
 
-
-drawButtons = function (from, to) {
-    //  clearPaginate();
+drawButtons = function(from, to) {
     for (var i = from; i < to; i++) {
         if (i < 1) {
             i = 1;
@@ -121,7 +103,6 @@ drawButtons = function (from, to) {
     }
 };
 
-displayDots = function () {
-
+displayDots = function() {
     $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
 };
