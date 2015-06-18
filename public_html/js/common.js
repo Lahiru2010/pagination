@@ -12,29 +12,29 @@ lastPageText = "Last"; /* Last or << */
 
 
 
-$(function() {
+$(function () {
     currentValue = 1; /* current page number */
     buttonCount = parseInt(dataCount / pageSize);
     drawPginate(currentValue, buttonCount);
 
-    $('#paginate').on('click', '.page-button', function() {
+    $('#paginate').on('click', '.page-button', function () {
         currentValue = parseInt($(this).val());
         setCurrent(currentValue);
 
         drawPginate(currentValue, buttonCount);
     });
-    $('#paginate').on('click', '.page-button-first', function() {
+    $('#paginate').on('click', '.page-button-first', function () {
         currentValue = 1;
         setCurrent(currentValue);
         drawPginate(currentValue, buttonCount);
     });
-    $('#paginate').on('click', '.page-button-last', function() {
+    $('#paginate').on('click', '.page-button-last', function () {
         currentValue = parseInt(buttonCount);
         setCurrent(currentValue);
         drawPginate(currentValue, buttonCount);
     });
 
-    $('#paginate').on('click', '.page-button-pre', function() {
+    $('#paginate').on('click', '.page-button-pre', function () {
         currentValue = parseInt(currentValue) - 1;
         if (currentValue < 1)
             currentValue = 1
@@ -43,7 +43,7 @@ $(function() {
         drawPginate(currentValue, buttonCount);
     });
 
-    $('#paginate').on('click', '.page-button-next', function() {
+    $('#paginate').on('click', '.page-button-next', function () {
         currentValue = parseInt(currentValue) + 1;
         if (currentValue >= buttonCount)
             currentValue = buttonCount;
@@ -53,33 +53,34 @@ $(function() {
     });
 });
 
-drawPginate = function(currentValue, buttonCount) {
-    var allCount = currentValue + (marginValue - 1);
+drawPginate = function (currentValue, buttonCount) {
+
+    var buttonArray = [];
+    for (i = 0; i < buttonCount; i++) {
+        buttonArray.push(i);
+    }
+
+    var buttonArrayDisplay = [];
+    // var allCount = currentValue + (marginValue - 1);
     clearPaginate();
     $('#paginate').append("<input type='button' class='page-button-first' value='" + firstPageText + "'>  ");
     $('#paginate').append("<input type='button' class='page-button-pre' value='Prev'>  ");
 
 
-    if (currentValue > buttonCount - marginValue) {
-        $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
-
-        for (var i = buttonCount - marginValue; i <= buttonCount; i++) {
+    // if (currentValue > buttonCount - marginValue) {
+    $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
+    while ((currentValue + 2) <= buttonArray.length) {
+        for (var i = currentValue - 2; i <= currentValue + 2; i++) {
+            buttonArrayDisplay.push(i);
             if (i < 1) {
                 i = 1;
             }
-            $('#paginate').append("<input type='button' class='page-button' value='" + i + "'>  ");
-        }
 
-    } else {
-        for (var i = currentValue - 2; i < allCount; i++) {
-            if (i < 1) {
-                i = 1;
-            }
             $('#paginate').append("<input type='button' class='page-button' value='" + i + "'>  ");
         }
-        $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
     }
-
+    displayArray(buttonArrayDisplay);
+    $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
 
     $('#paginate').append("<input type='button' class='page-button-next' value='Next'>  ");
     $('#paginate').append("<input type='button' class='page-button-last' value='" + lastPageText + "'>");
@@ -88,16 +89,22 @@ drawPginate = function(currentValue, buttonCount) {
     getInputsByValue(currentValue);
 };
 
-clearPaginate = function() {
+clearPaginate = function () {
     $('#paginate').empty();
 };
 
-setCurrent = function(currentValue) {
+setCurrent = function (currentValue) {
     $('#currentVal').html(currentValue);
 };
 
-getInputsByValue = function(value)
+getInputsByValue = function (value)
 {
     $("#paginate :input[value='" + value + "']").addClass('current');
 };
 
+displayArray = function (array) {
+    console.log("\n\n\n\n\n\n");
+    for (var i = 0; i < array.length; i++) {
+        console.log("Array " + array[i]);
+    }
+};
