@@ -10,6 +10,7 @@ marginValue = 4; /* how many numbers should show in pagination */
 firstPageText = "First"; /* First or >> */
 lastPageText = "Last"; /* Last or << */
 
+marginRange = 3;
 
 
 $(function () {
@@ -67,23 +68,27 @@ drawPginate = function (currentValue, buttonCount) {
     $('#paginate').append("<input type='button' class='page-button-pre' value='Prev'>  ");
 
 
-    // if (currentValue > buttonCount - marginValue) {
-    $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
+    if ((currentValue - marginRange) <= 0) {
+        console.log(parseInt(currentValue) - marginRange + "----\n");
+        drawButtons(1, parseInt((2 * marginRange) + 2));
+        //console.log("parseInt((2*marginRange)+2)  : " + parseInt((2 * marginRange) + 2));
+        displayDots();
+    } else if ((currentValue - marginRange) <= 1) {
 
-        for (var i = currentValue - 2; i <= parseInt(currentValue)+2; i++) {
-            buttonArrayDisplay.push(i);
-            if (i < 1) {
-                i = 1;
-            }
-            if((parseInt(currentValue)+2)>=buttonArray.length){
-                continue;
-            }
+        console.log(parseInt(currentValue) - marginRange + "eeee \n");
+        drawButtons(1, currentValue + marginRange + 1);
+        displayDots();
 
-            $('#paginate').append("<input type='button' class='page-button' value='" + i + "'>  ");
-        }
-    
-    displayArray(buttonArrayDisplay);
-    $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
+    } else if ((currentValue) >= (buttonCount - marginRange)) {
+        displayDots();
+        console.log(parseInt(currentValue) - marginRange + "fffff \n");
+        drawButtons(parseInt(buttonCount - 2 * marginRange), parseInt(buttonCount + 1));
+        console.log("parseInt(buttonCount-2*marginRange) : " + parseInt(buttonCount - 2 * marginRange));
+    } else {
+        displayDots();
+        drawButtons(currentValue - marginRange, currentValue + marginRange + 1);
+        displayDots();
+    }
 
     $('#paginate').append("<input type='button' class='page-button-next' value='Next'>  ");
     $('#paginate').append("<input type='button' class='page-button-last' value='" + lastPageText + "'>");
@@ -105,9 +110,18 @@ getInputsByValue = function (value)
     $("#paginate :input[value='" + value + "']").addClass('current');
 };
 
-displayArray = function (array) {
-    console.log("\n\n\n\n\n\n");
-    for (var i = 0; i < array.length; i++) {
-        console.log("Array " + array[i]);
+
+drawButtons = function (from, to) {
+    //  clearPaginate();
+    for (var i = from; i < to; i++) {
+        if (i < 1) {
+            i = 1;
+        }
+        $('#paginate').append("<input type='button' class='page-button' value='" + i + "'>  ");
     }
+};
+
+displayDots = function () {
+
+    $('#paginate').append(" <input type='button' class='page-button' value='...' disabled >  ");
 };
